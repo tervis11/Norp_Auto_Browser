@@ -8,7 +8,9 @@
         "96": "icons/nab-96.png"
     },
     "background": {
-        "scripts": ["nab.js"]
+        "scripts": ["./nab.js"],
+        "persistent": true,
+        "type": "module"
     },
     "permissions": [
         "webRequest",
