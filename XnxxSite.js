@@ -3,19 +3,15 @@ import {SitesBase} from "./SitesBase.js";
 export class XnxxSite extends SitesBase {
     constructor() {
         super();
+        this.site_key = "xnxx";
 
         this.domain = "https://www.xnxx.com";
         this.search_path = "/search/";
     }
 
-    async get_videos_from_page(page) {
-        const videos = page.querySelectorAll(".thumb-block");
-        const videos_array = [];
+    get_videos_from_page = async (page) => page.querySelectorAll(".thumb-block");
 
-        for (let video of videos) {
-            videos_array.push(video);
-        }
+    get_video_id_from_video = async (video) => video.dataset.id;
 
-        return videos_array;
-    }
+    get_url_from_video = async (video) => video.querySelector("a").href.replace(/moz-extension:\/\/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/g, this.domain);
 }

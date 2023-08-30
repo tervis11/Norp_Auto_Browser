@@ -3,17 +3,28 @@
     "name": "Norp Auto Browse",
     "version": "1.0",
     "description": "Automatically loads porn videos 1 after another",
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "addon@example.com",
+            "strict_min_version": "42.0"
+        }
+    },
     "icons": {
         "48": "icons/nab-48.png",
         "96": "icons/nab-96.png"
     },
     "background": {
-        "scripts": ["./nab.js"],
+        "scripts": [
+            "./nab.js"
+        ],
         "persistent": true,
         "type": "module"
     },
     "permissions": [
         "webRequest",
+        "storage",
+        "tabs",
+        "unlimitedStorage",
         "*://*.xnxx.com/*",
         "https://www.xnxx.com/*"
     ],
