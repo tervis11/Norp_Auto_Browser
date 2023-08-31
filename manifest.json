@@ -20,13 +20,19 @@
         "persistent": true,
         "type": "module"
     },
+    "content_scripts": [
+        {
+            "matches": ["*://*.xnxx.com/*"],
+            "js": ["./content_scripts/xnxx.js"]
+        }
+    ],
     "permissions": [
-        "webRequest",
+        "webNavigation",
+        "activeTab",
         "storage",
         "tabs",
         "unlimitedStorage",
-        "*://*.xnxx.com/*",
-        "https://www.xnxx.com/*"
+        "*://*.xnxx.com/*"
     ],
     "browser_action": {
         "default_icon": {

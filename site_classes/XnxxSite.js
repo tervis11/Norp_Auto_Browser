@@ -14,4 +14,6 @@ export class XnxxSite extends SitesBase {
     get_video_id_from_video = async (video) => video.dataset.id;
 
     get_url_from_video = async (video) => video.querySelector("a").href.replace(/moz-extension:\/\/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/g, this.domain);
+
+
 }
