@@ -1,12 +1,12 @@
 import {SitesBase} from "./SitesBase.js";
 
-export class XnxxSite extends SitesBase {
+export class XvideosSite extends SitesBase {
     constructor() {
         super();
-        this.site_key = "xnxx";
+        this.site_key = "xvideos";
 
-        this.domain = "https://www.xnxx.com";
-        this.search_path = "search";
+        this.domain = "https://www.xvideos.com";
+        this.search_path = "k=";
     }
 
     /**
@@ -17,7 +17,7 @@ export class XnxxSite extends SitesBase {
      * @returns {Promise<Document>}               The search results
      */
     search = async (query, page_number = 0) => {
-        const url = `${this.domain}/${this.search_path}/${query}/${page_number || ""}`;
+        const url = `${this.domain}?k=${query}&p=${page_number || ""}`;
         const response = await fetch(url);
         const html = await response.text();
 

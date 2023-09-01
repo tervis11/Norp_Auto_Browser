@@ -17,6 +17,11 @@ export class SitesBase {
         await this.create_video_controls();
     }
 
+    /**
+     * Creates the video controls
+     *
+     * @returns {Promise<void>}
+     */
     create_video_controls = async () => {
         this.video_controls = {
             play: this.play_video,
@@ -26,6 +31,43 @@ export class SitesBase {
             fullscreen: this.fullscreen_video,
             exit_fullscreen: this.exit_fullscreen_video
         }
+    }
+
+    /**
+     * Returns the next video url
+     *
+     * @returns {Promise<null>}
+     */
+    get_next_video_url = async () => {
+        let random_tag = await this.get_random_tag();
+        let initial_search_results = await this.search(random_tag);
+        let shuffled_page_numbers = await this.get_shuffled_page_numbers(initial_search_results);
+        let next_video_url = null;
+
+        while (shuffled_page_numbers.length > 0) {
+            let page_number = shuffled_page_numbers.shift();
+            let search_results = await this.search(random_tag, page_number);
+            let videos = await this.get_videos_from_page(search_results);
+            let shuffled_videos = await window.help_functions.shuffle_array(videos);
+
+            while (shuffled_videos.length > 0) {
+                let video = shuffled_videos.shift();
+
+                let video_id = await this.get_video_id_from_video(video);
+                let is_viewed_video = await this.storage.viewed_videos.includes(video_id);
+                let is_favorite_video = await this.storage.favorite_videos.includes(video_id);
+
+                let should_use_video = !is_viewed_video || (this.settings.should_play_favorite_videos && is_favorite_video);
+
+                if (should_use_video) {
+                    next_video_url = await this.get_url_from_video(video);
+
+                     return next_video_url;
+                }
+            }
+        }
+
+        return next_video_url;
     }
 
     /**
@@ -42,57 +84,32 @@ export class SitesBase {
     /**
      * Returns a DOM document of search results based on the query
      *
-     * @param   {string}                       query        The query to search for
-     * @returns {Promise<Document>}                         The search results
+     * @param   {string}             query        The query to search for
+     * @param   {number}             page_number  The page number to get the search results from
+     * @returns {Promise<Document>}               The search results
      */
-    search = async (query) => {
-        const url = this.domain + this.search_path + query;
-        const response = await fetch(url);
-        const html = await response.text();
+    search = async (query, page_number = 0) => {}
 
-        return await window.help_functions.html_response_to_dom_document(html);
+    /**
+     * Returns a shuffled array of page numbers
+     *
+     * @param   {Document}        page      The page to get the page numbers from
+     * @returns {Promise<*[]>}
+     */
+    get_shuffled_page_numbers = async (page) => {
+        let last_page_number = await this.get_last_page_number_from_pagination(page);
+        let page_numbers = [...Array(last_page_number).keys()];
+
+        return window.help_functions.shuffle_array(page_numbers);
     }
 
     /**
-     * Returns the next video from the page
+     * Returns the last page number from the pagination
      *
-     * @param   {Document}                     page         The page to get the next video from
-     * @returns {Promise<*>}                                The next video
+     * @param   {Document}          page       The page to get the last page number from
+     * @returns {Promise<number>}
      */
-    get_next_video_from_page = async (page) => {
-        let videos = await this.get_videos_from_page(page);
-
-        for (let video of videos) {
-            let video_id = await this.get_video_id_from_video(video);
-            let is_viewed_video = await this.storage.viewed_videos.includes(video_id);
-            let is_favorite_video = await this.storage.favorite_videos.includes(video_id);
-
-            let should_use_video = !is_viewed_video || (this.settings.should_play_favorite_videos && is_favorite_video);
-
-            if (should_use_video) {
-                return video;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the url from the video
-     *
-     * @param       {string}           video_element    The video element to get the url from
-     * @returns     {Promise<null>}
-     */
-    get_url_from_video = async (video_element) => null;
-
-    goto_next_video = async (video) => {
-        let random_tag = await this.get_random_tag();
-        let search_results = await this.search(random_tag);
-        let next_video = await this.get_next_video_from_page(search_results);
-        let next_video_url = await this.get_url_from_video(next_video);
-
-        await browser.tabs.update({url: next_video_url});
-    }
+    get_last_page_number_from_pagination = async (page) => 0;
 
     /**
      * Returns the videos from the page
@@ -109,6 +126,18 @@ export class SitesBase {
      * @returns  {Promise<null>}
      */
     get_video_id_from_video = async (video_element) => null;
+
+    /**
+     * Returns the url from the video
+     *
+     * @param       {string}           video_element    The video element to get the url from
+     * @returns     {Promise<null>}
+     */
+    get_url_from_video = async (video_element) => null;
+
+     /////////////////////
+    // Player controls //
+   /////////////////////
 
     /**
      * Sends a message to the content script to play the video
