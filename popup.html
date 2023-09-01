@@ -1,0 +1,91 @@
+<style>
+    #popup {
+        width: 300px;
+        height: 125px;
+    }
+
+    #div1, #div2 {
+        width: 50%;
+        height: 100%;
+    }
+
+    #div1 {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    #div1 table, #div2 table {
+        width: 100%;
+        height: 100%;
+    }
+
+    #div1 table {
+        border-right: 1px solid lightgrey;
+    }
+
+    #div2 {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    #site_xnxx, #site_xvideos, #site_xhamster, #site_pornhub {
+        cursor: default;
+    }
+
+    #site_xhamster, #site_pornhub {
+        text-decoration: line-through;
+    }
+
+    #tags {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<div id="popup">
+    <div id="div1">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Sites</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="site_xnxx">
+                    <td><input type="checkbox" /></td>
+                    <td>Xnxx</td>
+                </tr>
+                <tr id="site_xvideos">
+                    <td><input type="checkbox" /></td>
+                    <td>Xvideos</td>
+                </tr>
+                <tr id="site_xhamster" title="Disabled">
+                    <td><input type="checkbox" disabled /></td>
+                    <td>Xhamster</td>
+                </tr>
+                <tr id="site_pornhub" title="Disabled">
+                    <td><input type="checkbox" disabled /></td>
+                    <td>Pornhub</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="div2">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Tags<br>(Comma Separated)</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <textarea id="tags"></textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
