@@ -1,19 +1,14 @@
-import {Storage} from "../utilities/Storage.js";
-import {Settings} from "../utilities/Settings.js";
-
 export class SitesBase {
     constructor() {
         this.site_key = null;
         this.domain = null;
         this.search_path = null;
         this.search_tag = null;
-
-        this.storage = new Storage(this.site_key);
-        this.settings = new Settings();
     }
 
     initialize = async () => {
-        await this.storage.initialize();
+        this.storage = await window.main.storage.get_storage_area(this.site_key);
+
         await this.create_video_controls();
     }
 
@@ -48,7 +43,7 @@ export class SitesBase {
             let page_number = shuffled_page_numbers.shift();
             let search_results = await this.search(random_tag, page_number);
             let videos = await this.get_videos_from_page(search_results);
-            let shuffled_videos = await window.help_functions.shuffle_array(videos);
+            let shuffled_videos = await window.main.help_functions.shuffle_array(videos);
 
             while (shuffled_videos.length > 0) {
                 let video = shuffled_videos.shift();
@@ -57,12 +52,12 @@ export class SitesBase {
                 let is_viewed_video = await this.storage.viewed_videos.includes(video_id);
                 let is_favorite_video = await this.storage.favorite_videos.includes(video_id);
 
-                let should_use_video = !is_viewed_video || (this.settings.should_play_favorite_videos && is_favorite_video);
+                let should_use_video = !is_viewed_video || (window.main.settings.should_play_favorite_videos && is_favorite_video);
 
                 if (should_use_video) {
                     next_video_url = await this.get_url_from_video(video);
 
-                     return next_video_url;
+                    return next_video_url;
                 }
             }
         }
@@ -76,7 +71,7 @@ export class SitesBase {
      * @returns {Promise<string>}
      */
     get_random_tag = async () => {
-        let tags = this.settings.tags;
+        let tags = window.main.settings.tags;
 
         return tags[Math.floor(Math.random() * tags.length)];
     }
@@ -100,7 +95,7 @@ export class SitesBase {
         let last_page_number = await this.get_last_page_number_from_pagination(page);
         let page_numbers = [...Array(last_page_number).keys()];
 
-        return window.help_functions.shuffle_array(page_numbers);
+        return window.main.help_functions.shuffle_array(page_numbers);
     }
 
     /**

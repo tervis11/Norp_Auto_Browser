@@ -21,7 +21,7 @@ export class XvideosSite extends SitesBase {
         const response = await fetch(url);
         const html = await response.text();
 
-        let search_page = await window.help_functions.html_response_to_dom_document(html);
+        let search_page = await window.main.help_functions.html_response_to_dom_document(html);
 
         return search_page;
     }

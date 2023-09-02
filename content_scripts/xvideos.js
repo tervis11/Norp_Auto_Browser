@@ -2,7 +2,6 @@
     "use strict";
 
     let icon_url = browser.runtime.getURL("./icons/temp_fav_icon.png");
-    console.log(icon_url)
 
     let buttons = {
         play: document.querySelector("#hlsplayer img[title='Play']"),
@@ -30,7 +29,21 @@
     let div = document.createElement("div");
     div.id = "nab_div";
     div.style = "position: absolute; top: 0; right: 0; background-color: rgba(0,0,0,0.5); z-index: 9999";
-    div.innerHTML = `<button id='nab_add_to_favorites'>Fav</button>`;
+    div.innerHTML = `<button id='nab_add_to_favorites'><img src="${browser.runtime.getURL("../icons/temp_fav_icon.png")}" style="height: 50px; opacity: .5"></button>`;
     
     document.querySelector("#hlsplayer").prepend(div);
+
+    let toggle_button = div.querySelector("#nab_add_to_favorites");
+    toggle_button.addEventListener("click", async (event) => {
+        let image = event.target;
+
+        if (image.classList.contains("active")) {
+            image.classList.remove("active");
+            image.style.opacity = ".5";
+        }
+        else {
+            image.classList.add("active");
+            image.style.opacity = "1";
+        }
+    });
 })();

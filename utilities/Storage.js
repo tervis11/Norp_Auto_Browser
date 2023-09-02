@@ -1,11 +1,28 @@
 export class Storage {
-    constructor(site_key) {
-        this.site_key = site_key;
+    constructor() {
+        this.site_key = null;
     }
 
-    initialize = async () => {
-        this.storage_area = await this.get_storage_area();
+    get_storage_area = async (site_key) => {
+        this.site_key = site_key;
+        this.storage_area = await browser.storage.local.get(this.site_key);
 
+        if (Object.keys(this.storage_area).length === 0) {
+            console.log("Storage area not found, crafting a new one")
+            await browser.storage.local.set({
+                [this.site_key]: {
+                    viewed_videos: [],
+                    favorite_videos: []
+                }
+            });
+
+            this.storage_area = await browser.storage.local.get(this.site_key);
+        }
+
+        return this.storage_area[this.site_key];
+    }
+
+    set_video_controls = async () => {
         this.viewed_videos = {
             get: async () => this.storage_area.viewed_videos,
             add: async (video_id) => this.storage_area.viewed_videos.push(video_id),
@@ -20,23 +37,5 @@ export class Storage {
         };
     }
 
-    get_storage_area = async () => {
-        let storage_area = browser.storage.sync.get(this.site_key);
-
-        if (Object.keys(storage_area).length === 0) {
-            console.log("Storage area not found, creating a new one")
-            await browser.storage.sync.set({
-                [this.site_key]: {
-                    viewed_videos: [],
-                    favorite_videos: []
-                }
-            });
-
-            storage_area = await browser.storage.sync.get(this.site_key);
-        }
-
-        return storage_area[this.site_key];
-    }
-
-    remove_storage_area = () => browser.storage.sync.remove(this.site_key);
+    remove_storage_area = () => browser.storage.local.remove(this.site_key);
 }
