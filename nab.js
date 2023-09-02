@@ -24,24 +24,22 @@ class Main {
         });
     }
 
-    run = async () => {
-        await this.initialize();
+    start = async () => this.next_video();
 
-        await this.next_video();
-    }
+    stop = async () => {throw new Error();}
 
     next_video = async () => {
         let next_video_url = await this.xvideos_site.get_next_video_url();
 
         await browser.tabs.update({url: next_video_url});
-
-        if (!browser.webNavigation.onCompleted.hasListener(this.xvideos_site.video_controls.play)) {
-            await browser.webNavigation.onCompleted.addListener(this.xvideos_site.video_controls.play);
-        }
-
-        if (this.settings.should_mute_videos) {
-            await this.xvideos_site.video_controls.mute();
-        }
+        //
+        // if (!browser.webNavigation.onCompleted.hasListener(this.xvideos_site.video_controls.play)) {
+        //     await browser.webNavigation.onCompleted.addListener(this.xvideos_site.video_controls.play);
+        // }
+        //
+        // if (this.settings.should_mute_videos) {
+        //     await this.xvideos_site.video_controls.mute();
+        // }
 
         // TODO: figure out how to fullscreen the video
         // if (this.settings.should_fullscreen_videos) {
@@ -51,4 +49,4 @@ class Main {
 }
 
 let main = new Main();
-await main.run();
+await main.initialize();

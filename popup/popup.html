@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<div id="popup">
+    <div class="row">
+        <div id="sites_container" class="column">
+            <div class="row">
+                <div class="column header">
+                    Sites
+                </div>
+            </div>
+            <div class="row">
+                <label class="button on-off-button off" title="Xnxx.com">
+                    <input type="checkbox" id="xnxx_site" class="site-option" data-setting="XnxxSite" />
+                    Xnxx
+                </label>
+            </div>
+            <div class="row">
+                <label class="button on-off-button off" title="Xvideos.com">
+                    <input type="checkbox" id="xvideos_site" class="site-option" data-setting="XvideosSite" />
+                    Xvideos
+                </label>
+            </div>
+        </div>
+        <div id="settings_container" class="column">
+            <div class="row">
+                <div class="column header">
+                    Settings
+                </div>
+            </div>
+            <div class="row">
+                <label class="button on-off-button off" title="Auto Mute Videos">
+                    <input type="checkbox" id="should_mute_videos" data-setting="should_mute_videos" />
+                    Mute
+                </label>
+            </div>
+            <div class="row">
+                <label class="button on-off-button off" title="Auto Fullscreen Videos">
+                    <input type="checkbox" id="should_fullscreen_videos" data-setting="should_fullscreen_videos" />
+                    Fullscreen
+                </label>
+            </div>
+            <div class="row">
+                <label class="button on-off-button off" title="Play Favorited Videos">
+                    <input type="checkbox" id="should_play_favorite_videos" data-setting="should_play_favorite_videos" />
+                    Favorite
+                </label>
+            </div>
+        </div>
+    </div>
+    <div id="tags_container" class="row">
+        <div class="column">
+            <div class="row">
+                <div id="tags_header" class="column header">
+                    Tags
+                </div>
+            </div>
+            <div class="row">
+                <div id="tags_input" class="column">
+                    <textarea id="tags_textarea" placeholder="Enter comma separated tags here" title="Enter comma separated tags here"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="browse_controls_row" class="row">
+        <div class="column">
+            <button class="button on" id="start_button">Start</button>
+        </div>
+        <div class="column">
+            <button class="button off" id="stop_button">Stop</button>
+        </div>
+    </div>
+</div>
+
+    <script type="module" src="popup.js"></script>
+</body>
+</html>

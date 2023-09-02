@@ -1,9 +1,10 @@
 export class Settings {
     constructor() {
-        this._should_play_favorite_videos = true;
         this._should_mute_videos = true;
-        this._should_fullscreen_videos = true;
-        this.tags = ["test", "a"]
+        this._should_fullscreen_videos = false;
+        this._should_play_favorite_videos = true;
+        this._tags = ["test", "a"]
+        this._sites = ["XvideosSite"];
     }
 
     get should_play_favorite_videos() {
@@ -27,5 +28,9 @@ export class Settings {
         this._should_fullscreen_videos = value;
     }
 
+    get tags() { return this._tags; }
+    set tags(value) { this._tags = value; }
 
+    get sites() { return this._sites; }
+    set sites(value) { this._sites = value; }
 }
