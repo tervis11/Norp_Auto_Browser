@@ -44,6 +44,9 @@ class Main {
             else if (message.is_video_playing) {
                 this.is_video_playing = message.is_video_playing;
             }
+            else if (message.cs_script_is_ready) {
+                await this.play_video();
+            }
         });
     }
 
@@ -63,19 +66,6 @@ class Main {
         let next_video_url = await this.active_site.get_next_video_url();
 
         await browser.tabs.update({url: next_video_url});
-
-        if (!browser.webNavigation.onCompleted.hasListener(this.active_site.video_controls.play)) {
-            await browser.webNavigation.onCompleted.addListener(async () => {
-                let tabs = await browser.tabs.query({active: true, currentWindow: true});
-
-                await browser.tabs.sendMessage(tabs[0].id, {is_favorite: this.active_site.is_favorite_video})
-                    .catch((error) => {
-                        console.log(error);
-                    });
-
-                await this.play_video();
-            });
-        }
     }
 
     get_random_site = async () => {
@@ -88,6 +78,13 @@ class Main {
     }
 
     play_video = async () => {
+        let tabs = await browser.tabs.query({active: true, currentWindow: true});
+
+        await browser.tabs.sendMessage(tabs[0].id, {is_favorite: this.active_site.is_favorite_video})
+            .catch((error) => {
+                console.log(error);
+            });
+
         let play_try_max_count = 10;
         let play_try_count = 0;
 

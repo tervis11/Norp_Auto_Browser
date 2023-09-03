@@ -49,6 +49,9 @@
     video_element.addEventListener("ended", (event) => {
          browser.runtime.sendMessage("addon@example.com", {video_has_ended: true})
     });
+    video_element.addEventListener("playing", (event) => {
+        browser.runtime.sendMessage("addon@example.com", {is_video_playing: true})
+    });
 
     let toggle_button = div.querySelector("#nab_add_to_favorites");
     toggle_button.addEventListener("click", async (event) => {
@@ -65,4 +68,6 @@
 
        await browser.runtime.sendMessage("addon@example.com", {toggle_is_favorite: true})
     });
+
+    browser.runtime.sendMessage("addon@example.com", {cs_script_is_ready: true});
 })();

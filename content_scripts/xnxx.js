@@ -71,5 +71,5 @@
        await browser.runtime.sendMessage("addon@example.com", {toggle_is_favorite: true})
     });
 
-
+    browser.runtime.sendMessage("addon@example.com", {cs_script_is_ready: true});
 })();
