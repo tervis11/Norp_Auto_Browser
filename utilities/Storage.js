@@ -19,23 +19,16 @@ export class Storage {
             this.storage_area = await browser.storage.local.get(this.site_key);
         }
 
-        return this.storage_area[this.site_key];
+        return this.storage_area;
     }
 
-    set_video_controls = async () => {
-        this.viewed_videos = {
-            get: async () => this.storage_area.viewed_videos,
-            add: async (video_id) => this.storage_area.viewed_videos.push(video_id),
-            remove: async (video_id) => this.storage_area.viewed_videos = this.storage_area.viewed_videos.filter((video) => video !== video_id),
-            includes: async (video_id) => this.storage_area.viewed_videos.includes(video_id)
-        };
-        this.favorite_videos = {
-            get: async () => this.storage_area.favorite_videos,
-            add: async (video_id) => this.storage_area.favorite_videos.push(video_id),
-            remove: async (video_id) => this.storage_area.favorite_videos = this.storage_area.favorite_videos.filter((video) => video !== video_id),
-            includes: async (video_id) => this.storage_area.favorite_videos.includes(video_id)
-        };
-    }
+    get_viewed_videos = async () => this.storage_area.viewed_videos;
+    add_viewed_video = async (video_id) => this.storage_area.viewed_videos.push(video_id);
+    remove_viewed_video = async (video_id) => this.storage_area.viewed_videos.splice(this.storage_area.viewed_videos.indexOf(video_id), 1);
+
+    get_favorite_videos = async () => this.storage_area.favorite_videos;
+    add_favorite_video = async (video_id) => this.storage_area.favorite_videos.push(video_id);
+    remove_favorite_video = async (video_id) => this.storage_area.favorite_videos.splice(this.storage_area.favorite_videos.indexOf(video_id), 1);
 
     remove_storage_area = () => browser.storage.local.remove(this.site_key);
 }

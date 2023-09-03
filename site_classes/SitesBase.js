@@ -4,10 +4,12 @@ export class SitesBase {
         this.domain = null;
         this.search_path = null;
         this.search_tag = null;
+        this.is_favorite_video = false;
+        this.video_id = null;
     }
 
     initialize = async () => {
-        this.storage = await window.main.storage.get_storage_area(this.site_key);
+        await this.get_storage_area(this.site_key);
 
         await this.create_video_controls();
     }
@@ -48,11 +50,11 @@ export class SitesBase {
             while (shuffled_videos.length > 0) {
                 let video = shuffled_videos.shift();
 
-                let video_id = await this.get_video_id_from_video(video);
-                let is_viewed_video = await this.storage.viewed_videos.includes(video_id);
-                let is_favorite_video = await this.storage.favorite_videos.includes(video_id);
+                this.video_id = await this.get_video_id_from_video(video);
+                let is_viewed_video = this.storage_area.viewed_videos.includes(this.video_id);
+                this.is_favorite_video = this.storage_area.favorite_videos.includes(this.video_id);
 
-                let should_use_video = !is_viewed_video || (window.main.settings.should_play_favorite_videos && is_favorite_video);
+                let should_use_video = !is_viewed_video || (window.main.settings.should_play_favorite_videos && this.is_favorite_video);
 
                 if (should_use_video) {
                     next_video_url = await this.get_url_from_video(video);
@@ -130,7 +132,44 @@ export class SitesBase {
      */
     get_url_from_video = async (video_element) => null;
 
-     /////////////////////
+    /**
+     * Adds the video id to the viewed videos array in storage
+     */
+    add_video_id_to_viewed_videos = async () => {
+        this.storage_area.viewed_videos.push(this.video_id);
+    }
+
+    /**
+     * Adds the video id to the favorite videos array in storage
+     */
+    add_or_remove_video_id_to_favorite_videos = async () => {
+        if (this.storage_area.favorite_videos.includes(this.video_id)) {
+            this.storage_area.favorite_videos = this.storage_area.favorite_videos.filter((video_id) => video_id !== this.video_id);
+        }
+        else {
+            this.storage_area.favorite_videos.push(this.video_id);
+        }
+    }
+
+    get_storage_area = async () => {
+        this.storage_area = await browser.storage.local.get(this.site_key);
+
+        if (Object.keys(this.storage_area).length === 0) {
+            console.log("Storage area not found, crafting a new one")
+            await browser.storage.local.set({
+                [this.site_key]: {
+                    viewed_videos: [],
+                    favorite_videos: []
+                }
+            });
+
+            this.storage_area = await browser.storage.local.get(this.site_key);
+        }
+
+        this.storage_area = this.storage_area[this.site_key];
+    }
+
+    /////////////////////
     // Player controls //
    /////////////////////
 

@@ -3,8 +3,8 @@ export class Settings {
         this._should_mute_videos = true;
         this._should_fullscreen_videos = false;
         this._should_play_favorite_videos = true;
-        this._tags = ["test", "a"]
-        this._sites = ["XvideosSite"];
+        this._tags = ["Tifa", "Martha Stewart"]
+        this._sites = ["xvideos_site", "xnxx_site"];
     }
 
     get should_play_favorite_videos() {

@@ -54,7 +54,13 @@ class Popup {
         await this.update_button_state(event_target);
     }
     update_tags_setting = async () => {
-        this.settings.tags = this.tags_textarea.value.replace(/[\n\r]/g, '').trim().split(/,|\n/);
+        let split = this.tags_textarea.value.replace(/[\n\r]/g, '').trim().split(/,|\n/);
+
+        this.settings.tags.length = 0;
+
+        for (let item_in_split of split) {
+            this.settings.tags.push(item_in_split.trim());
+        }
     }
     update_should_play_favorite_videos_setting = async (event) => {
         let event_target = event.target;
