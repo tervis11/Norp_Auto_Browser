@@ -1,5 +1,6 @@
 import {XnxxSite} from "./site_classes/XnxxSite.js";
 import {XvideosSite} from "./site_classes/XvideosSite.js";
+import {XhamsterSite} from "./site_classes/XhamsterSite.js";
 import {Settings} from "./utilities/Settings.js";
 import {HelpFunctions} from "./utilities/HelpFunctions.js";
 
@@ -23,13 +24,16 @@ class Main {
     initialize = async () => {
         this.xnxx_site = new XnxxSite();
         this.xvideos_site = new XvideosSite();
+        this.xhamster_site = new XhamsterSite();
 
         await this.xvideos_site.initialize();
         await this.xnxx_site.initialize();
+        await this.xhamster_site.initialize();
 
         this.classes = {
             xnxx_site: this.xnxx_site,
-            xvideos_site: this.xvideos_site
+            xvideos_site: this.xvideos_site,
+            xhamster_site: this.xhamster_site
         }
 
         await browser.runtime.onMessage.addListener(async (message) => {
@@ -85,16 +89,15 @@ class Main {
                 console.log(error);
             });
 
-        let play_try_max_count = 10;
+        let play_try_max_count = 20;
         let play_try_count = 0;
 
         let is_playing_interval = setInterval(async () => {
             if (this.is_video_playing) {
                 clearInterval(is_playing_interval);
-                is_playing_interval = null;
                 return;
             }
-            else if (!this.is_video_playing && play_try_count < play_try_max_count) {
+            else if (!this.is_video_playing && play_try_count < this.active_site.max_retries) {
                 await this.active_site.video_controls.play();
 
                 if (this.settings.should_mute_videos) {
@@ -110,10 +113,9 @@ class Main {
             }
             else {
                 clearInterval(is_playing_interval);
-                is_playing_interval = null;
                 await this.next_video();
             }
-        }, 1000);
+        }, this.active_site.retry_delay);
     }
 }
 

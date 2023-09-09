@@ -7,6 +7,8 @@ export class XnxxSite extends SitesBase {
 
         this.domain = "https://www.xnxx.com";
         this.search_path = "search";
+        this.retry_delay = 1000;
+        this.max_retries = 10;
     }
 
     /**

@@ -233,6 +233,7 @@ export class SitesBase {
      * @returns {Promise<any>}
      */
     send_video_command = async (command) => {
+        console.log(`Sending ${command} command to content script`)
         let tabs = await browser.tabs.query({active: true, currentWindow: true});
 
         return browser.tabs.sendMessage(tabs[0].id, {video_action: command})

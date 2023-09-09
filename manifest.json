@@ -28,6 +28,10 @@
         {
             "matches": ["*://*.xvideos.com/*"],
             "js": ["./content_scripts/xvideos.js"]
+        },
+        {
+            "matches": ["*://*.xhamster.com/*"],
+            "js": ["./content_scripts/xhamster.js"]
         }
     ],
     "permissions": [
@@ -37,7 +41,8 @@
         "tabs",
         "unlimitedStorage",
         "*://*.xnxx.com/*",
-        "*://*.xvideos.com/*"
+        "*://*.xvideos.com/*",
+        "*://*.xhamster.com/*"
     ],
     "browser_action": {
         "default_icon": {
