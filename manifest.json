@@ -23,15 +23,19 @@
     "content_scripts": [
         {
             "matches": ["*://*.xnxx.com/*"],
-            "js": ["./content_scripts/xnxx.js"]
+            "js": ["./content_scripts/XnxxCS.js"]
         },
         {
             "matches": ["*://*.xvideos.com/*"],
-            "js": ["./content_scripts/xvideos.js"]
+            "js": ["./content_scripts/XvideosCS.js"]
         },
         {
             "matches": ["*://*.xhamster.com/*"],
-            "js": ["./content_scripts/xhamster.js"]
+            "js": ["./content_scripts/XhamsterCS.js"]
+        },
+        {
+            "matches": ["*://*.tnaflix.com/*"],
+            "js": ["./content_scripts/TnaflixCS.js"]
         }
     ],
     "permissions": [
@@ -42,7 +46,8 @@
         "unlimitedStorage",
         "*://*.xnxx.com/*",
         "*://*.xvideos.com/*",
-        "*://*.xhamster.com/*"
+        "*://*.xhamster.com/*",
+        "*://*.tnaflix.com/*"
     ],
     "browser_action": {
         "default_icon": {

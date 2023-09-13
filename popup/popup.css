@@ -1,5 +1,5 @@
 html, body {
-    width: 300px;
+    width: 350px;
 }
 
 #tags_container {
@@ -17,23 +17,39 @@ html, body {
     width: 49%;
 }
 
+#sites_container {
+    width: 65%;
+    overflow: auto;
+}
 #settings_container {
+    width: 35%;
     border-left: 1px solid lightgrey;
 }
 
-#settings_container, #sites_container {
+#sites_container, #settings_container {
+    padding-left: .5em;
+    padding-right: .5em;
     text-align: center;
-    width: 50%;
     height: 100%;
 }
 
-#settings_container > .row > label, #sites_container > .row > label {
-    width: 50%;
+
+#sites_container .row label {
+    width: 60%;
+}
+#settings_container .row label {
+    width: 60%;
+}
+
+#sites_container .row label, #settings_container .row label {
     height: auto;
     margin: auto;
 }
 
-#sites_container .header, #settings_container .header {
+#sites_container .header {
+    width: 80%;
+}
+#settings_container .header {
     width: 70%;
 }
 

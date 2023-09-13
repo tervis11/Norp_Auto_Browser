@@ -1,6 +1,7 @@
 import {XnxxSite} from "./site_classes/XnxxSite.js";
 import {XvideosSite} from "./site_classes/XvideosSite.js";
 import {XhamsterSite} from "./site_classes/XhamsterSite.js";
+import {TnaflixSite} from "./site_classes/TnaflixSite.js";
 import {Settings} from "./utilities/Settings.js";
 import {HelpFunctions} from "./utilities/HelpFunctions.js";
 
@@ -25,15 +26,18 @@ class Main {
         this.xnxx_site = new XnxxSite();
         this.xvideos_site = new XvideosSite();
         this.xhamster_site = new XhamsterSite();
+        this.tnaflix_site = new TnaflixSite();
 
         await this.xvideos_site.initialize();
         await this.xnxx_site.initialize();
         await this.xhamster_site.initialize();
+        await this.tnaflix_site.initialize();
 
         this.classes = {
             xnxx_site: this.xnxx_site,
             xvideos_site: this.xvideos_site,
-            xhamster_site: this.xhamster_site
+            xhamster_site: this.xhamster_site,
+            tnaflix_site: this.tnaflix_site
         }
 
         await browser.runtime.onMessage.addListener(async (message) => {

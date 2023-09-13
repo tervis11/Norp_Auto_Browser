@@ -4,7 +4,8 @@ export class Settings {
         this._should_fullscreen_videos = false;
         this._should_play_favorite_videos = true;
         this._tags = ["Tifa", "Martha Stewart"]
-        this._sites = ["xvideos_site", "xnxx_site", "xhamster_site"];
+        this._sites = ["xvideos_site", "xnxx_site", "xhamster_site", "tnaflix_site"];
+        // this._sites = ["tnaflix_site"];
     }
 
     get should_play_favorite_videos() {
