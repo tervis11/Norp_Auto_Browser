@@ -6,6 +6,8 @@ export class SitesBase {
         this.search_tag = null;
         this.is_favorite_video = false;
         this.video_id = null;
+
+        this.retry_delay = 10000;
     }
 
     initialize = async () => {
@@ -46,6 +48,7 @@ export class SitesBase {
             let search_results = await this.search(random_tag, page_number);
             let videos = await this.get_videos_from_page(search_results);
             let shuffled_videos = await window.main.help_functions.shuffle_array(videos);
+
 
             while (shuffled_videos.length > 0) {
                 let video = shuffled_videos.shift();

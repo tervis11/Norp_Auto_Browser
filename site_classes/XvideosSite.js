@@ -7,8 +7,6 @@ export class XvideosSite extends SitesBase {
 
         this.domain = "https://www.xvideos.com";
         this.search_path = "k=";
-        this.retry_delay = 1000;
-        this.max_retries = 10;
     }
 
     /**

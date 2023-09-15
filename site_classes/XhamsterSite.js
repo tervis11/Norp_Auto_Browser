@@ -7,8 +7,6 @@ export class XhamsterSite extends SitesBase {
 
         this.domain = "https://www.xhamster.com";
         this.search_path = "search";
-        this.retry_delay = 5000;
-        this.max_retries = 5;
     }
 
     /**

@@ -36,6 +36,10 @@
         {
             "matches": ["*://*.tnaflix.com/*"],
             "js": ["./content_scripts/TnaflixCS.js"]
+        },
+        {
+            "matches": ["*://*.pornhub.com/*"],
+            "js": ["./content_scripts/PornhubCS.js"]
         }
     ],
     "permissions": [
@@ -47,7 +51,8 @@
         "*://*.xnxx.com/*",
         "*://*.xvideos.com/*",
         "*://*.xhamster.com/*",
-        "*://*.tnaflix.com/*"
+        "*://*.tnaflix.com/*",
+        "*://*.pornhub.com/*"
     ],
     "browser_action": {
         "default_icon": {

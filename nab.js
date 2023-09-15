@@ -2,6 +2,7 @@ import {XnxxSite} from "./site_classes/XnxxSite.js";
 import {XvideosSite} from "./site_classes/XvideosSite.js";
 import {XhamsterSite} from "./site_classes/XhamsterSite.js";
 import {TnaflixSite} from "./site_classes/TnaflixSite.js";
+import {PornhubSite} from "./site_classes/PornhubSite.js";
 import {Settings} from "./utilities/Settings.js";
 import {HelpFunctions} from "./utilities/HelpFunctions.js";
 
@@ -11,6 +12,8 @@ import {HelpFunctions} from "./utilities/HelpFunctions.js";
 
 class Main {
     constructor() {
+        window.main = this;
+
         this.is_active = false;
 
         this.help_functions = new HelpFunctions();
@@ -18,8 +21,6 @@ class Main {
 
         this.active_site = null;
         this.is_video_playing = false;
-
-        window.main = this;
     }
 
     initialize = async () => {
@@ -27,18 +28,23 @@ class Main {
         this.xvideos_site = new XvideosSite();
         this.xhamster_site = new XhamsterSite();
         this.tnaflix_site = new TnaflixSite();
+        this.pornhub_site = new PornhubSite();
 
         await this.xvideos_site.initialize();
         await this.xnxx_site.initialize();
         await this.xhamster_site.initialize();
         await this.tnaflix_site.initialize();
+        await this.pornhub_site.initialize();
 
         this.classes = {
             xnxx_site: this.xnxx_site,
             xvideos_site: this.xvideos_site,
             xhamster_site: this.xhamster_site,
-            tnaflix_site: this.tnaflix_site
+            tnaflix_site: this.tnaflix_site,
+            pornhub_site: this.pornhub_site
         }
+
+        browser.webNavigation.onCompleted.addListener(async () => {this.is_page_loaded = true});
 
         await browser.runtime.onMessage.addListener(async (message) => {
             if (message.video_has_ended && this.is_active) {
@@ -68,7 +74,7 @@ class Main {
     }
 
     next_video = async () => {
-        this.is_video_playing = false;
+        this.is_page_loaded = false;
 
         this.active_site = await this.get_random_site();
         let next_video_url = await this.active_site.get_next_video_url();
@@ -96,30 +102,38 @@ class Main {
         let play_try_max_count = 20;
         let play_try_count = 0;
 
-        let is_playing_interval = setInterval(async () => {
-            if (this.is_video_playing) {
-                clearInterval(is_playing_interval);
+        this.is_video_playing = false;
+        await this.get_is_page_loaded();
+
+        if (this.settings.should_mute_videos) {
+            await this.active_site.video_controls.mute();
+        }
+
+        await this.active_site.video_controls.play();
+
+        await window.main.help_functions.async_timeout(this.active_site.retry_delay);
+
+        if (!this.is_video_playing) {
+            await this.next_video();
+        }
+    }
+
+    get_is_page_loaded = async () => {
+        let is_page_loaded_count = 0;
+
+        let is_page_loaded_interval = setInterval(async () => {
+            if (this.is_page_loaded) {
+                clearInterval(is_page_loaded_interval);
                 return;
             }
-            else if (!this.is_video_playing && play_try_count < this.active_site.max_retries) {
-                await this.active_site.video_controls.play();
-
-                if (this.settings.should_mute_videos) {
-                    await this.xvideos_site.video_controls.mute();
-                }
-
-                // TODO: figure out how to fullscreen the video
-                // if (this.settings.should_fullscreen_videos) {
-                //     await this.xnxx_site.video_controls.fullscreen();
-                // }
-
-                play_try_count++;
+            else if (!this.is_page_loaded && is_page_loaded_count < 10) {
+                is_page_loaded_count++;
             }
             else {
-                clearInterval(is_playing_interval);
+                clearInterval(is_page_loaded_interval);
                 await this.next_video();
             }
-        }, this.active_site.retry_delay);
+        }, 1000);
     }
 }
 

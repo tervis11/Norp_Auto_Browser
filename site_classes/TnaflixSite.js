@@ -7,8 +7,6 @@ export class TnaflixSite extends SitesBase {
 
         this.domain = "https://www.tnaflix.com";
         this.search_path = "search.php?what=";
-        this.retry_delay = 1000;
-        this.max_retries = 10;
     }
 
     /**

@@ -25,4 +25,8 @@ export class HelpFunctions {
 
         return shuffled_array;
     }
+
+    async_timeout = async (ms) => {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 }

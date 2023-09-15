@@ -3,17 +3,24 @@ export class ContentScriptBase {
         this.player_container_element = null;
         this.favorite_icon = null;
         this.video_element = null;
-        this.buttons = null;
+        this.video_control = null;
     }
 
     initialize = async () => {
+        this.video_control = {
+            play: await this.play_video,
+            pause: this.pause_video,
+            mute: this.mute_video,
+            unmute: this.unmute_video,
+            fullscreen: this.fullscreen_video
+        };
+
         await this.add_favorite_icon();
         await this.set_event_listeners();
-        await this.set_buttons();
 
         browser.runtime.onMessage.addListener((message) => {
             if (message.hasOwnProperty("video_action")) {
-                this.buttons[message.video_action].click();
+                this.video_control[message.video_action]();
             }
              else if (message.hasOwnProperty("is_favorite")) {
                 let div = document.querySelector("#nab_div");
@@ -32,8 +39,6 @@ export class ContentScriptBase {
 
         await browser.runtime.sendMessage("addon@example.com", {cs_script_is_ready: true});
     }
-
-    set_buttons = async () => {}
 
     add_favorite_icon = async () => {
         console.log("ContentScriptBase.add_favorite_icon()");
@@ -75,4 +80,10 @@ export class ContentScriptBase {
 
            await browser.runtime.sendMessage("addon@example.com", {toggle_is_favorite: true})
     }
+
+    play_video = async () => {}
+    pause_video = async () => {}
+    mute_video = async () => {}
+    unmute_video = async () => {}
+    fullscreen_video = async () => {}
 }
