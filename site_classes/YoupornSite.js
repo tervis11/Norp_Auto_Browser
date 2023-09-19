@@ -1,12 +1,12 @@
 import {SitesBase} from "./SitesBase.js";
 
-export class PornhubSite extends SitesBase {
+export class YoupornSite extends SitesBase {
     constructor() {
         super();
-        this.site_key = "pornhub";
+        this.site_key = "youporn";
 
-        this.domain = "https://www.pornhub.com";
-        this.search_path = "video/search?search=";
+        this.domain = "https://www.youporn.com";
+        this.search_path = "search/?query=";
     }
 
     /**
@@ -38,16 +38,17 @@ export class PornhubSite extends SitesBase {
     }
 
     get_last_page_number_from_pagination = async (page) => {
-        let results_per_page = 44;
-        let results_total_text = page.querySelector(".showingCounter").textContent;
-        let results_total = parseInt(results_total_text.split(" of ")[1].replace(/,/g, "").trim());
+        let regex = /searchCount: \d+,/g;
+        let search_count_text = page.querySelector(".filters-wrapper script").textContent.trim().match(regex)[0];
+        let search_count = parseInt(search_count_text.split(" ")[1].replace(/,/g, "").trim());
 
-        return Math.floor(results_total / results_per_page);
+        let results_per_page = 32;
+        return Math.floor(search_count / results_per_page);
     }
 
-    get_videos_from_page = async (page) => page.querySelectorAll("#videoSearchResult > li");
+    get_videos_from_page = async (page) => page.querySelectorAll(".searchResults .video-box");
 
     get_video_id_from_video = async (video) => video.dataset.videoId;
 
-    get_url_from_video = async (video) => video.querySelector("a[href^='/view_video.php?']").href.replace(/moz-extension:\/\/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/g, this.domain);
+    get_url_from_video = async (video) => video.querySelector("a.video-title").href.replace(/moz-extension:\/\/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/g, this.domain);
 }

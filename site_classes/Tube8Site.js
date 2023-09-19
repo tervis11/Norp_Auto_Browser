@@ -1,12 +1,12 @@
 import {SitesBase} from "./SitesBase.js";
 
-export class PornhubSite extends SitesBase {
+export class Tube8Site extends SitesBase {
     constructor() {
         super();
-        this.site_key = "pornhub";
+        this.site_key = "tube8";
 
-        this.domain = "https://www.pornhub.com";
-        this.search_path = "video/search?search=";
+        this.domain = "https://www.tube8.com";
+        this.search_path = "searches.html?q=";
     }
 
     /**
@@ -37,17 +37,13 @@ export class PornhubSite extends SitesBase {
         return window.main.help_functions.shuffle_array(page_numbers);
     }
 
-    get_last_page_number_from_pagination = async (page) => {
-        let results_per_page = 44;
-        let results_total_text = page.querySelector(".showingCounter").textContent;
-        let results_total = parseInt(results_total_text.split(" of ")[1].replace(/,/g, "").trim());
+    get_last_page_number_from_pagination = async (page) => parseInt(
+        page.querySelector("ul#pagination > li:nth-last-child(2)").textContent.trim()
+    );
 
-        return Math.floor(results_total / results_per_page);
-    }
+    get_videos_from_page = async (page) => page.querySelectorAll(".video_box");
 
-    get_videos_from_page = async (page) => page.querySelectorAll("#videoSearchResult > li");
+    get_video_id_from_video = async (video) => video.dataset.videoid;
 
-    get_video_id_from_video = async (video) => video.dataset.videoId;
-
-    get_url_from_video = async (video) => video.querySelector("a[href^='/view_video.php?']").href.replace(/moz-extension:\/\/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/g, this.domain);
+    get_url_from_video = async (video) => video.dataset.video_url;
 }

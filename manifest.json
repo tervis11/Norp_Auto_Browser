@@ -40,6 +40,18 @@
         {
             "matches": ["*://*.pornhub.com/*"],
             "js": ["./content_scripts/PornhubCS.js"]
+        },
+        {
+            "matches": ["*://*.redtube.com/*"],
+            "js": ["./content_scripts/RedtubeCS.js"]
+        },
+        {
+            "matches": ["*://*.tube8.com/*"],
+            "js": ["./content_scripts/Tube8CS.js"]
+        },
+        {
+            "matches": ["*://*.youporn.com/*"],
+            "js": ["./content_scripts/YoupornCS.js"]
         }
     ],
     "permissions": [
@@ -52,7 +64,10 @@
         "*://*.xvideos.com/*",
         "*://*.xhamster.com/*",
         "*://*.tnaflix.com/*",
-        "*://*.pornhub.com/*"
+        "*://*.pornhub.com/*",
+        "*://*.redtube.com/*",
+        "*://*.tube8.com/*",
+        "*://*.youporn.com/*"
     ],
     "browser_action": {
         "default_icon": {

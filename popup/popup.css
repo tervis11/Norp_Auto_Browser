@@ -1,5 +1,5 @@
 html, body {
-    width: 350px;
+    width: 400px;
 }
 
 #tags_container {
@@ -30,12 +30,13 @@ html, body {
     padding-left: .5em;
     padding-right: .5em;
     text-align: center;
+    max-height: 175px;
     height: 100%;
 }
 
 
 #sites_container .row label {
-    width: 60%;
+    width: 70%;
 }
 #settings_container .row label {
     width: 60%;

@@ -3,6 +3,9 @@ import {XvideosSite} from "./site_classes/XvideosSite.js";
 import {XhamsterSite} from "./site_classes/XhamsterSite.js";
 import {TnaflixSite} from "./site_classes/TnaflixSite.js";
 import {PornhubSite} from "./site_classes/PornhubSite.js";
+import {YoupornSite} from "./site_classes/YoupornSite.js";
+import {RedtubeSite} from "./site_classes/RedtubeSite.js";
+import {Tube8Site} from "./site_classes/Tube8Site.js";
 import {Settings} from "./utilities/Settings.js";
 import {HelpFunctions} from "./utilities/HelpFunctions.js";
 
@@ -29,19 +32,28 @@ class Main {
         this.xhamster_site = new XhamsterSite();
         this.tnaflix_site = new TnaflixSite();
         this.pornhub_site = new PornhubSite();
+        this.redtube_site = new RedtubeSite();
+        this.tube8_site = new Tube8Site();
+        this.youporn_site = new YoupornSite();
 
         await this.xvideos_site.initialize();
         await this.xnxx_site.initialize();
         await this.xhamster_site.initialize();
         await this.tnaflix_site.initialize();
         await this.pornhub_site.initialize();
+        await this.redtube_site.initialize();
+        await this.tube8_site.initialize();
+        await this.youporn_site.initialize();
 
         this.classes = {
             xnxx_site: this.xnxx_site,
             xvideos_site: this.xvideos_site,
             xhamster_site: this.xhamster_site,
             tnaflix_site: this.tnaflix_site,
-            pornhub_site: this.pornhub_site
+            pornhub_site: this.pornhub_site,
+            redtube_site: this.redtube_site,
+            tube8_site: this.tube8_site,
+            youporn_site: this.youporn_site
         }
 
         browser.webNavigation.onCompleted.addListener(async () => {this.is_page_loaded = true});

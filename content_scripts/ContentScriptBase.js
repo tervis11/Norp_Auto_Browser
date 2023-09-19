@@ -41,7 +41,6 @@ export class ContentScriptBase {
     }
 
     add_favorite_icon = async () => {
-        console.log("ContentScriptBase.add_favorite_icon()");
         let icon_url = browser.runtime.getURL("./icons/temp_fav_icon.png");
         // Add div to teh page for adding video to favorites
         this.favorite_icon = document.createElement("div");
